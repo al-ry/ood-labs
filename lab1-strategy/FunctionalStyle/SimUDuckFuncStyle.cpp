@@ -38,7 +38,7 @@ void DoNotDance()
 namespace FlyBehavior
 {
 
-FlyBehaviorFn FlyWithWings()
+FlyBehaviorFn MakeFlyWithWings()
 {
 	int flightCounter = 0;
 	return [flightCounter]() mutable
@@ -97,7 +97,7 @@ class MallardDuck : public Duck
 {
 public:
 	MallardDuck()
-		: Duck(DanceBehavior::DanceWaltz, FlyBehavior::FlyWithWings(), QuackBehavior::Quack)
+		: Duck(DanceBehavior::DanceWaltz, FlyBehavior::MakeFlyWithWings(), QuackBehavior::Quack)
 	{
 	}
 	void Display() const override
@@ -110,7 +110,7 @@ class RedheadDuck : public Duck
 {
 public:
 	RedheadDuck()
-		: Duck(DanceBehavior::DanceMinuet, FlyBehavior::FlyWithWings(), QuackBehavior::Quack)
+		: Duck(DanceBehavior::DanceMinuet, FlyBehavior::MakeFlyWithWings(), QuackBehavior::Quack)
 	{
 	}
 	void Display() const override
@@ -191,7 +191,7 @@ int main()
 	ModelDuck modelDuck;
 	PlayWithDuck(modelDuck);
 
-	modelDuck.SetFlyBehavior(FlyBehavior::FlyWithWings());
+	modelDuck.SetFlyBehavior(FlyBehavior::MakeFlyWithWings());
 
 	for (size_t i = 0; i < 5; i++)
 	{
@@ -203,7 +203,7 @@ int main()
 	modelDuck.SetFlyBehavior(FlyBehavior::FlyNoWay);
 	PlayWithDuck(modelDuck);
 
-	modelDuck.SetFlyBehavior(FlyBehavior::FlyWithWings());
+	modelDuck.SetFlyBehavior(FlyBehavior::MakeFlyWithWings());
 	PlayWithDuck(modelDuck);
 
 	return 0;
