@@ -273,22 +273,22 @@ class CStatOutsideDisplay : public IObserver<SWeatherInfoPro>
 private:
 	void Update(SWeatherInfoPro const& data) override
 	{
-		std::cout << "------------Statisitic weather outside----------------\n";
 		m_outsideStatistic.temperatureStat.UpdateStatistic(data.basicInfo.temperature);
 		m_outsideStatistic.humidityStat.UpdateStatistic(data.basicInfo.humidity);
 		m_outsideStatistic.pressureStat.UpdateStatistic(data.basicInfo.pressure);
 		m_outsideStatistic.windSpeedStat.UpdateStatistic(data.wind.speed);
 		m_outsideStatistic.windDirectionStat.UpdateStatistic(data.wind.direction);
 		PrintStatistic();
-		std::cout << "------------Statisitic weather outside----------------\n";
 	}
 	void PrintStatistic()
 	{
+		std::cout << "------------Statisitic weather outside----------------\n";
 		m_outsideStatistic.temperatureStat.PrintStatistic("temperature");
 		m_outsideStatistic.humidityStat.PrintStatistic("humidity");
 		m_outsideStatistic.pressureStat.PrintStatistic("pressure");
 		m_outsideStatistic.windSpeedStat.PrintStatistic("wind speed");
 		m_outsideStatistic.windDirectionStat.PrintStatistic("wind direction");
+		std::cout << "------------Statisitic weather outside----------------\n";
 	}
 
 private:
@@ -301,19 +301,19 @@ class CStatInsideDisplay : public IObserver<SWeatherInfo>
 private:
 	void Update(SWeatherInfo const& data) override
 	{
-		std::cout << "------------Statisitic weather inside----------------\n";
 		m_insideStatistic.temperatureStat.UpdateStatistic(data.temperature);
 		m_insideStatistic.humidityStat.UpdateStatistic(data.humidity);
 		m_insideStatistic.pressureStat.UpdateStatistic(data.pressure);
 		PrintStatistic();
-		std::cout << "------------Statisitic weather inside----------------\n";
 	}
 private:
 	void PrintStatistic()
 	{
+		std::cout << "------------Statisitic weather inside----------------\n";
 		m_insideStatistic.temperatureStat.PrintStatistic("temperature");
 		m_insideStatistic.humidityStat.PrintStatistic("humidity");
 		m_insideStatistic.pressureStat.PrintStatistic("pressure");
+		std::cout << "------------Statisitic weather inside----------------\n";
 	}
 private:
 	SWeatherStatistic m_insideStatistic;
