@@ -56,6 +56,7 @@ template <typename WeatherInfo>
 class CWeatherData
 {
 	using WeatherSignal = Signal<void(const WeatherInfo& data)>;
+	using Slot = typename const WeatherSignal::slot_type;
 public:
 	CWeatherData() = default;
 	void SetMeasurements(const WeatherInfo& data)
@@ -63,7 +64,7 @@ public:
 		m_signallingValue = data;
 	}
 
-	Connection DoOnWeatherChange(typename const WeatherSignal::slot_type& slot)
+	Connection DoOnWeatherChange(const Slot& slot)
 	{
 		return m_signallingValue.Connect1(slot, false);
 	}
