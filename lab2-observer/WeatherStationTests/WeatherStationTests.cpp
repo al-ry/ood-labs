@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "../WeatherStation/WeatherData.h"
 #include "../WeatherStation/Observer.h"
-#include <boost\test\tools\output_test_stream.hpp>
+
 
 
 class CTestDisplay : public IObserver<SWeatherInfo>
 {
 public:
-	CTestDisplay(boost::test_tools::output_test_stream& stream)
+	CTestDisplay(std::stringstream& stream)
 		: m_stream(stream)
 	{
 	}
@@ -17,14 +17,14 @@ private:
 	{
 		m_stream << "TestDisplay info\n";
 	}
-	boost::test_tools::output_test_stream& m_stream;
+	std::stringstream& m_stream;
 };
 
 
 class CTestStatDisplay : public IObserver<SWeatherInfo>
 {
 public:
-	CTestStatDisplay(boost::test_tools::output_test_stream& stream)
+	CTestStatDisplay(std::stringstream& stream)
 		: m_stream(stream)
 	{
 	}
@@ -34,13 +34,13 @@ private:
 	{
 		m_stream << "TestStatDisplay info\n";
 	}
-	boost::test_tools::output_test_stream& m_stream;
+	std::stringstream& m_stream;
 };
 
 struct WeatherData
 {
 	CWeatherData wd;
-	boost::test_tools::output_test_stream stream;
+	std::stringstream stream;
 };
 
 struct WithDisplays : WeatherData
@@ -62,12 +62,12 @@ BOOST_FIXTURE_TEST_SUITE(Test_observers_priority, WithDisplays)
 	wd.SetMeasurements(18, 0.4, 766);
 	BOOST_CHECK_EQUAL(stream.str(), "TestStatDisplay info\nTestDisplay info\n");
 
-	stream.flush();
+	stream.str("");
 	wd.RemoveObserver(statDisplay);
 	wd.SetMeasurements(18, 0.4, 764);
-	BOOST_CHECK(stream.is_equal("TestDisplay info\n"));
+	BOOST_CHECK(stream.str() == "TestDisplay info\n");
 
-	stream.flush();
+	stream.str("");
 	wd.RegisterObserver(statDisplay, 0);
 	wd.SetMeasurements(20, 0.8, 765);
 	BOOST_CHECK_EQUAL(stream.str(), "TestDisplay info\nTestStatDisplay info\n");

@@ -11,7 +11,7 @@ struct DuoWeatherData
 class CTestDisplay
 {
 public:
-	CTestDisplay(CWeatherData<SWeatherInfo>& in, CWeatherData<SWeatherInfoPro>& out, boost::test_tools::output_test_stream& stream)
+	CTestDisplay(CWeatherData<SWeatherInfo>& in, CWeatherData<SWeatherInfoPro>& out, std::stringstream& stream)
 		: m_stream(stream)
 	{
 		m_innerConnection = in.DoOnWeatherChange([this](const SWeatherInfo& innerInfo) {
@@ -36,39 +36,39 @@ private:
 	ScopedConnection m_innerConnection;
 	ScopedConnection m_outerConnection;
 
-	boost::test_tools::output_test_stream& m_stream;
+	std::stringstream& m_stream;
 };
 
 
 BOOST_FIXTURE_TEST_SUITE(Test_duo_pro_with_signals, DuoWeatherData)
 	BOOST_AUTO_TEST_CASE(test_signals)
 	{
-		boost::test_tools::output_test_stream stream;
+		std::stringstream stream;
 		CTestDisplay display(in, out, stream);
 
 		in.SetMeasurements({ 5, 5, 5 });
 		out.SetMeasurements({ 5, 5, 5, 8, 8 });
-		BOOST_CHECK(stream.is_equal("Inside updated\nOutside updated\n"));
+		BOOST_CHECK(stream.str() == "Inside updated\nOutside updated\n");
 
-		stream.flush();
 
+		stream.str("");
 		out.SetMeasurements({ 5, 5, 5, 5, 5});
 		in.SetMeasurements({ 7, 7, 7 });
 
-		BOOST_CHECK(stream.is_equal("Outside updated\nInside updated\n"));
-		stream.flush();
+		BOOST_CHECK(stream.str() == "Outside updated\nInside updated\n");
+		stream.str("");
 
 		out.SetMeasurements({ 5, 5, 7, 5, 5 });
 		out.SetMeasurements({ 5, 5, 5, 0, 5 });
-		BOOST_CHECK(stream.is_equal("Outside updated\nOutside updated\n"));
+		BOOST_CHECK(stream.str() == "Outside updated\nOutside updated\n");
 
-		stream.flush();
+		stream.str("");
 		in.SetMeasurements({ 5, 5, 7});
 		in.SetMeasurements({ 5, 5, 5});
-		BOOST_CHECK(stream.is_equal("Inside updated\nInside updated\n"));
+		BOOST_CHECK(stream.str() == "Inside updated\nInside updated\n");
 
-		stream.flush();
+		stream.str("");
 		in.SetMeasurements({ 5, 5, 5 });
-		BOOST_CHECK(stream.is_equal(""));
+		BOOST_CHECK(stream.str() == "");
 	}
 BOOST_AUTO_TEST_SUITE_END()
