@@ -4,7 +4,10 @@ int main()
 {
 	CWeatherData wdIn;
 	CWeatherData wdOut;
-
+	{
+		CDisplay display(wdIn, wdOut);
+		wdIn.RemoveObserver(display);
+	}
 	CDisplay display(wdIn, wdOut);
 	wdIn.RegisterObserver(display, 1);
 	wdOut.RegisterObserver(display, 1);

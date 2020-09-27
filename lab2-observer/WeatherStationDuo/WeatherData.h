@@ -71,6 +71,12 @@ public:
 		, m_outerIndicator(outIndicator)
 	{
 	}
+	~CDisplay()
+	{
+		m_innerIndicator.RemoveObserver(*this);
+		m_outerIndicator.RemoveObserver(*this);
+	}
+
 private:
 	void Update(SWeatherInfo const& data, const IObservable<SWeatherInfo>& indicator) override
 	{
@@ -146,6 +152,11 @@ public:
 		: m_innerIndicator(inIndicator)
 		, m_outerIndicator(outIndicator)
 	{
+	}
+	~CStatsDisplay()
+	{
+		m_innerIndicator.RemoveObserver(*this);
+		m_outerIndicator.RemoveObserver(*this);
 	}
 
 private:

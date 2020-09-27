@@ -66,7 +66,7 @@ public:
 	{
 		std::erase_if(m_observers, [&](const auto& item) {
 			return item.second == std::addressof(observer);
-			});
+		});
 	}
 
 protected:

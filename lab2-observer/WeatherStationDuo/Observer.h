@@ -45,7 +45,7 @@ public:
 	{
 		auto it = std::find_if(m_observers.begin(), m_observers.end(), [&](const auto& pair) {
 			return &observer == pair.second;
-			});
+		});
 		if (it == m_observers.end())
 		{
 			m_observers.emplace(priority, &observer);
