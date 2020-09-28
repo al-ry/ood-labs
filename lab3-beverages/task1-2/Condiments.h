@@ -152,7 +152,7 @@ public:
 
 	double GetCondimentCost() const override
 	{
-		return 10 * m_quantity;
+		return 10.0 * m_quantity;
 	}
 
 	std::string GetCondimentDescription() const override
