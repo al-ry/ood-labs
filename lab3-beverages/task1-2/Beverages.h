@@ -62,7 +62,7 @@ class CCappuccino : public CCoffee
 {
 public:
 	CCappuccino(CoffeePortion portion = CoffeePortion::Standart)
-		: CCoffee(CoffeePortionToString(portion) + "Cappuccino")
+		: CCoffee(CoffeePortionToString(portion) + " Cappuccino")
 	{
 		if (portion == CoffeePortion::Double)
 		{
@@ -84,7 +84,7 @@ class CLatte : public CCoffee
 {
 public:
 	CLatte(CoffeePortion portion = CoffeePortion::Standart)
-		: CCoffee(CoffeePortionToString(portion) + "Latte")
+		: CCoffee(CoffeePortionToString(portion) + " Latte")
 	{
 		if (portion == CoffeePortion::Double)
 		{
@@ -130,7 +130,7 @@ class CTea : public CBeverage
 {
 public:
 	CTea(KindOfTea tea = KindOfTea::Black)
-		: CBeverage(KindOfTeaToString(tea) + "Tea")
+		: CBeverage(KindOfTeaToString(tea) + " Tea")
 	{
 	}
 
@@ -169,7 +169,7 @@ class CMilkshake : public CBeverage
 {
 public:
 	CMilkshake(MilkshakePortion portion = MilkshakePortion::Medium)
-		: CBeverage(MilkShakePortionToString(portion) + "Milkshake")
+		: CBeverage(MilkShakePortionToString(portion) + " Milkshake")
 	{
 		switch (portion)
 		{
