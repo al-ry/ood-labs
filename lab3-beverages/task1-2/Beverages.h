@@ -42,7 +42,7 @@ enum class CoffeePortion
 	Double
 };
 
-std::string CoffeePortionToString(CoffeePortion portion)
+inline std::string CoffeePortionToString(CoffeePortion portion)
 {
 	switch (portion)
 	{
@@ -109,7 +109,7 @@ enum class KindOfTea
 	Oolong
 };
 
-std::string KindOfTeaToString(KindOfTea tea)
+inline std::string KindOfTeaToString(KindOfTea tea)
 {
 	switch (tea)
 	{
@@ -149,7 +149,7 @@ enum class MilkshakePortion
 };
 
 
-std::string MilkShakePortionToString(MilkshakePortion portion)
+inline std::string MilkShakePortionToString(MilkshakePortion portion)
 {
 	switch (portion)
 	{
