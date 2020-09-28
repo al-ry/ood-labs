@@ -66,7 +66,7 @@ public:
 protected:
 	double GetCondimentCost() const override
 	{
-		return 10 * m_quantity;
+		return 10.0 * m_quantity;
 	}
 	std::string GetCondimentDescription() const override
 	{
@@ -100,7 +100,7 @@ protected:
 	{
 		// Чем больше кубиков, тем больше стоимость.
 		// Сухой лед стоит дороже
-		return (m_type == IceCubeType::Dry ? 10 : 5) * m_quantity;
+		return (m_type == IceCubeType::Dry ? 10.0 : 5.0) * m_quantity;
 	}
 	std::string GetCondimentDescription() const override
 	{
@@ -233,7 +233,7 @@ public:
 
 	double GetCondimentCost() const override
 	{
-		return 2 * m_mass;
+		return 2.0 * m_mass;
 	}
 
 	std::string GetCondimentDescription() const override

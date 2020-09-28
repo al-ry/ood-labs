@@ -47,9 +47,9 @@ std::string CoffeePortionToString(CoffeePortion portion)
 	switch (portion)
 	{
 	case CoffeePortion::Standart:
-		return "Standart ";
+		return "Standart";
 	case CoffeePortion::Double:
-		return "Double ";
+		return "Double";
 	default:
 		return "";
 	}
@@ -114,13 +114,13 @@ std::string KindOfTeaToString(KindOfTea tea)
 	switch (tea)
 	{
 	case KindOfTea::Black:
-		return "Black ";
+		return "Black";
 	case KindOfTea::Green:
-		return "Green ";
+		return "Green";
 	case KindOfTea::Red:
-		return "Red ";
+		return "Red";
 	case KindOfTea::Oolong:
-		return "Oolong ";
+		return "Oolong";
 	default:
 		return "";
 	}
@@ -154,11 +154,11 @@ std::string MilkShakePortionToString(MilkshakePortion portion)
 	switch (portion)
 	{
 	case MilkshakePortion::Small:
-		return "Small ";
+		return "Small";
 	case MilkshakePortion::Medium:
-		return "Medium ";
+		return "Medium";
 	case MilkshakePortion::Large:
-		return "Large ";
+		return "Large";
 	default:
 		return "";
 	}
