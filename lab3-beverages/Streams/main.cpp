@@ -141,7 +141,7 @@ int main(int argc, char** argv)
 		std::cout << "Options <--encrypt> <--decrypt> must contains <key>.";
 		return 1;
 	}
-	catch (std::runtime_error e)
+	catch (std::runtime_error &e)
 	{
 		std::cout << e.what();
 		return 1;
