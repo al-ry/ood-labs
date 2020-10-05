@@ -36,11 +36,6 @@ public:
 			{
 				buffer[i] = ReadByte();
 			}
-			catch (std::logic_error& e)
-			{
-				std::cout << e.what();
-				throw e;
-			}
 			catch (std::ios_base::failure&)
 			{
 				return i;
