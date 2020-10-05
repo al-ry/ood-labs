@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "CMemoryInputStream.h"
-#include "COutputFileStream.h"
+#include "CFileOutputStream.h"
 #include "COutputStreamCompressor.h"
-#include "COutputMemoryStream.h"
+#include "CMemoryOutputStream.h"
 #include "CEncryptedOutputStream.h"
 #include "CFileInputStream.h"
 #include "CInputStreamDecompressor.h"
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 	}
 	
 	IInputStreamPtr inputStream = std::make_unique<CFileInputStream>(argv[argc - 2]);
-	IOutputStreamPtr outputStream = std::make_unique<COutputFileStream>(argv[argc - 1]);
+	IOutputStreamPtr outputStream = std::make_unique<CFileOutputStream>(argv[argc - 1]);
 	try
 	{
 		StreamsOptions options = ParseOptions(argc - 2, argv);

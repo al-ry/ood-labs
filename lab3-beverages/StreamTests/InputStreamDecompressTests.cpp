@@ -11,7 +11,7 @@ std::vector<uint8_t> MakeArrayWithPacket(uint8_t amount, uint8_t byte)
 	return arr;
 }
 
-std::unique_ptr<CInputStreamDecompressor> MakeInputDecompressDecorator(std::vector<uint8_t> data)
+std::unique_ptr<CInputStreamDecompressor> MakeInputDecompressDecorator(std::vector<uint8_t>& data)
 {
 	auto stream = std::make_unique<CMemoryInputStream>(data);
 	auto decompressedStream = std::make_unique<CInputStreamDecompressor>(std::move(stream));

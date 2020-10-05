@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "../Streams/CMemoryInputStream.h"
-#include "../Streams/COutputMemoryStream.h"
+#include "../Streams/CMemoryOutputStream.h"
 #include "../Streams/CEncryptedOutputStream.h"
 #include "../Streams/CDecryptedInputStream.h"
 
 
 std::unique_ptr<CEncryptedOutputStream> MakeOutputEncryptedDecorator(std::vector<uint8_t> &data, uint32_t key)
 {
-	auto stream = std::make_unique<COutputMemoryStream>(data);
+	auto stream = std::make_unique<CMemoryOutputStream>(data);
 	auto decodingStream = std::make_unique<CEncryptedOutputStream>(std::move(stream), key);
 	return decodingStream;
 }
@@ -28,6 +28,11 @@ BOOST_AUTO_TEST_SUITE(Test_encoding_decorator)
 		encodingStream->WriteByte('0');
 		encodingStream->WriteByte('f');
 		encodingStream->WriteByte('A');
+
+		BOOST_CHECK(vec[0] != 'Z');
+		BOOST_CHECK(vec[1] != '0');
+		BOOST_CHECK(vec[2] != 'f');
+		BOOST_CHECK(vec[3] != 'A');
 
 		auto decodingStream = MakeInputDecryptedDecorator(vec, 2020);
 		BOOST_CHECK(decodingStream->ReadByte() == 'Z');

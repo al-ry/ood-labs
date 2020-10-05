@@ -4,7 +4,7 @@
 class CMemoryInputStream : public IInputStream
 {
 public:
-	CMemoryInputStream(const std::vector<uint8_t>& data)
+	CMemoryInputStream(std::vector<uint8_t>& data)
 		: m_memoryStream(data)
 	{
 	}
@@ -39,6 +39,6 @@ public:
 	}
 
 private:
-	std::vector<uint8_t> m_memoryStream;
+	std::vector<uint8_t> &m_memoryStream;
 	size_t m_pos = 0;
 };

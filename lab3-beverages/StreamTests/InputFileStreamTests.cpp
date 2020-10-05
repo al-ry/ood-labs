@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "../Streams/CFileInputStream.h"
+#include <filesystem>
 
-
+auto tempPath = std::filesystem::temp_directory_path();
 
 struct EmptyInputStream
 {

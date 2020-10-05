@@ -1,10 +1,10 @@
 #pragma once
 #include "IOutputStream.h"
 
-class COutputMemoryStream: public IOutputStream
+class CMemoryOutputStream: public IOutputStream
 {
 public:
-	COutputMemoryStream(std::vector<uint8_t>& stream)
+	CMemoryOutputStream(std::vector<uint8_t>& stream)
 		: m_stream(stream)
 	{
 	}

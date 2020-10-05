@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "../Streams/COutputMemoryStream.h"
+#include "../Streams/CMemoryOutputStream.h"
 
 struct EmptyMemoryData
 {
@@ -8,7 +8,7 @@ struct EmptyMemoryData
 
 struct EmptyMemoryOutputStream: EmptyMemoryData
 {
-	COutputMemoryStream stream;
+	CMemoryOutputStream stream;
 	EmptyMemoryOutputStream()
 		: stream(bytes)
 	{

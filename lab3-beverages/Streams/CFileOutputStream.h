@@ -1,10 +1,10 @@
 #pragma once
 #include "IOutputStream.h"
 
-class COutputFileStream: public IOutputStream
+class CFileOutputStream: public IOutputStream
 {
 public:
-	COutputFileStream(const std::string& fileName)
+	CFileOutputStream(const std::string& fileName)
 	{
 		m_stream.open(fileName, std::ios::binary);
 		if(!m_stream.is_open())

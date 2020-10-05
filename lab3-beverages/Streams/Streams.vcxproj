@@ -154,8 +154,8 @@
     <ClInclude Include="COutputStreamCompressor.h" />
     <ClInclude Include="COutputStreamDecorator.h" />
     <ClInclude Include="CMemoryInputStream.h" />
-    <ClInclude Include="COutputFileStream.h" />
-    <ClInclude Include="COutputMemoryStream.h" />
+    <ClInclude Include="CFileOutputStream.h" />
+    <ClInclude Include="CMemoryOutputStream.h" />
     <ClInclude Include="IInputStream.h" />
     <ClInclude Include="IOutputStream.h" />
     <ClInclude Include="RLEPacket.h" />
