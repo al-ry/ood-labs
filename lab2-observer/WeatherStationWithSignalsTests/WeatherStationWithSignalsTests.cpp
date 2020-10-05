@@ -4,21 +4,30 @@
 
 struct DuoWeatherData
 {
-	CWeatherData<SWeatherInfo> in;
-	CWeatherData<SWeatherInfoPro> out;
+	CInsideWeatherData in;
+	COutsideWeatherData out;
 };
 
 class CTestDisplay
 {
 public:
-	CTestDisplay(CWeatherData<SWeatherInfo>& in, CWeatherData<SWeatherInfoPro>& out, std::stringstream& stream)
+	CTestDisplay(COutsideWeatherData& out, std::stringstream& stream)
 		: m_stream(stream)
 	{
-		m_innerConnection = in.DoOnWeatherChange([this](const SWeatherInfo& innerInfo) {
-			UpdateInside();
+		m_temperatureChangeConnection = out.DoOnTemperatureChange([this](double val) {
+			m_stream << "temp\n";
 		});
-		m_outerConnection = out.DoOnWeatherChange([this](const SWeatherInfoPro& innerInfo) {
-			UpdateOutside();
+		m_humidityChangeConnection = out.DoOnHumidityChange([this](double val) {
+			m_stream << "hum\n";
+		});
+		m_pressureChangeConnection = out.DoOnPressureChange([this](double val) {
+			m_stream << "pres\n";
+		});
+		m_windDirectionChangeConnection = out.DoOnWindDirectionChange([this](double val) {
+			m_stream << "dir\n";
+		});
+		m_windSpeedChangeConnection = out.DoOnWindSpeedChange([this](double val) {
+			m_stream << "speed\n";
 		});
 	}
 
@@ -33,8 +42,11 @@ private:
 	}
 	
 private:
-	ScopedConnection m_innerConnection;
-	ScopedConnection m_outerConnection;
+	ScopedConnection m_temperatureChangeConnection;
+	ScopedConnection m_humidityChangeConnection;
+	ScopedConnection m_pressureChangeConnection;
+	ScopedConnection m_windSpeedChangeConnection;
+	ScopedConnection m_windDirectionChangeConnection;
 
 	std::stringstream& m_stream;
 };
@@ -44,31 +56,14 @@ BOOST_FIXTURE_TEST_SUITE(Test_duo_pro_with_signals, DuoWeatherData)
 	BOOST_AUTO_TEST_CASE(test_signals)
 	{
 		std::stringstream stream;
-		CTestDisplay display(in, out, stream);
+		CTestDisplay display(out, stream);
 
-		in.SetMeasurements({ 5, 5, 5 });
-		out.SetMeasurements({ 5, 5, 5, 8, 8 });
-		BOOST_CHECK(stream.str() == "Inside updated\nOutside updated\n");
+		out.SetMeasurements(1,1,1,1,1);
+		BOOST_CHECK_EQUAL(stream.str(), "temp\nhum\npres\nspeed\ndir\n");
 
-
-		stream.str("");
-		out.SetMeasurements({ 5, 5, 5, 5, 5});
-		in.SetMeasurements({ 7, 7, 7 });
-
-		BOOST_CHECK(stream.str() == "Outside updated\nInside updated\n");
-		stream.str("");
-
-		out.SetMeasurements({ 5, 5, 7, 5, 5 });
-		out.SetMeasurements({ 5, 5, 5, 0, 5 });
-		BOOST_CHECK(stream.str() == "Outside updated\nOutside updated\n");
 
 		stream.str("");
-		in.SetMeasurements({ 5, 5, 7});
-		in.SetMeasurements({ 5, 5, 5});
-		BOOST_CHECK(stream.str() == "Inside updated\nInside updated\n");
-
-		stream.str("");
-		in.SetMeasurements({ 5, 5, 5 });
-		BOOST_CHECK(stream.str() == "");
+		out.SetMeasurements(1, 2, 1, 1, 2);
+		BOOST_CHECK_EQUAL(stream.str(), "hum\ndir\n");
 	}
 BOOST_AUTO_TEST_SUITE_END()

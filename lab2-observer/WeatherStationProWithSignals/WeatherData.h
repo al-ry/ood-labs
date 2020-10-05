@@ -1,9 +1,13 @@
 #pragma once
-#include "SignallingValue.h"
+#include <boost/signals2.hpp>
 #include <iostream>
 #include <functional>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <optional>
+using Connection = boost::signals2::connection;
+using ScopedConnection = boost::signals2::scoped_connection;
+
 
 namespace ph = std::placeholders;
 struct SWeatherInfo
@@ -25,60 +29,147 @@ struct SWeatherInfoPro
 	SWindInfo wind;
 };
 
-bool operator==(const SWeatherInfoPro& firstOp, const SWeatherInfoPro& secondOp)
+struct SOutsideWeatherInfo
 {
-	return firstOp.basicInfo.humidity == secondOp.basicInfo.humidity
-		&& firstOp.basicInfo.pressure == secondOp.basicInfo.pressure
-		&& firstOp.basicInfo.temperature == secondOp.basicInfo.temperature
-		&& firstOp.wind.direction == secondOp.wind.direction
-		&& firstOp.wind.speed == secondOp.wind.speed;
-}
+	double temperature = 0;
+	double humidity = 0;
+	double pressure = 0;
+	double windSpeed = 0;
+	double windDirection = 0;
+};
 
-
-bool operator!=(const SWeatherInfoPro& firstOp, const SWeatherInfoPro& secondOp)
+class COutsideWeatherData
 {
-	return !(firstOp == secondOp);
-}
-
-bool operator==(const SWeatherInfo& firstOp, const SWeatherInfo& secondOp)
-{
-	return firstOp.humidity == secondOp.humidity
-		&& firstOp.pressure == secondOp.pressure
-		&& firstOp.temperature == secondOp.temperature;
-}
-bool operator!=(const SWeatherInfo& firstOp, const SWeatherInfo& secondOp)
-{
-	return !(firstOp == secondOp);
-}
-
-
-template <typename WeatherInfo>
-class CWeatherData
-{
-	using WeatherSignal = Signal<void(const WeatherInfo& data)>;
-	using Slot = typename const WeatherSignal::slot_type;
 public:
-	CWeatherData() = default;
-	void SetMeasurements(const WeatherInfo& data)
+	using TemperatureChangeSignal = boost::signals2::signal<void(double temperature)>;
+	using HumidityChangeSignal = boost::signals2::signal<void(double humidity)>;
+	using PressureChangeSignal = boost::signals2::signal<void(double pressure)>;
+	using WindSpeedChangeSignal = boost::signals2::signal<void(double windSpeed)>;
+	using WindDirectionChangeSignal = boost::signals2::signal<void(double windDirection)>;
+
+	Connection DoOnTemperatureChange(const TemperatureChangeSignal::slot_type& slot)
 	{
-		m_signallingValue = data;
+		return m_temperatureChangeSignal.connect(slot);
+	}
+	Connection DoOnHumidityChange(const HumidityChangeSignal::slot_type& slot)
+	{
+		return m_humidityChangeSignal.connect(slot);
+	}
+	Connection DoOnPressureChange(const PressureChangeSignal::slot_type& slot)
+	{
+		return m_pressureChangeSignal.connect(slot);
+	}
+	Connection DoOnWindSpeedChange(const WindSpeedChangeSignal::slot_type& slot)
+	{
+		return m_windSpeedChangeSignal.connect(slot);
+	}
+	Connection DoOnWindDirectionChange(const WindDirectionChangeSignal::slot_type& slot)
+	{
+		return m_windDirectionChangeSignal.connect(slot);
 	}
 
-	Connection DoOnWeatherChange(const Slot& slot)
+	void SetMeasurements(double temperature, double humidity, double pressure, double windSpeed, double windDirection)
 	{
-		return m_signallingValue.Connect1(slot, false);
+		if (m_temperature != temperature)
+		{
+			m_temperature = temperature;
+			m_temperatureChangeSignal(temperature);
+		}
+
+		if (m_humidity != humidity)
+		{
+			m_humidity = humidity;
+			m_humidityChangeSignal(humidity);
+		}
+
+		if (m_pressure != pressure)
+		{
+			m_pressure = pressure;
+			m_pressureChangeSignal(pressure);
+		}
+
+		if (m_windSpeed != windSpeed)
+		{
+			m_windSpeed = windSpeed;
+			m_windSpeedChangeSignal(windSpeed);
+		}
+
+		if (m_windDirection != windDirection)
+		{
+			m_windDirection = windDirection;
+			m_windDirectionChangeSignal(windDirection);
+		}
 	}
 
 private:
-	SignallingValue<WeatherInfo> m_signallingValue;
+	double m_temperature = 0;
+	double m_humidity = 0;
+	double m_pressure = 0;
+	double m_windSpeed = 0;
+	double m_windDirection = 0;
+
+	TemperatureChangeSignal m_temperatureChangeSignal;
+	HumidityChangeSignal m_humidityChangeSignal;
+	PressureChangeSignal m_pressureChangeSignal;
+	WindSpeedChangeSignal m_windSpeedChangeSignal;
+	WindDirectionChangeSignal m_windDirectionChangeSignal;
+};
+
+class CInsideWeatherData
+{
+public:
+	using TemperatureChangeSignal = boost::signals2::signal<void(double temperature)>;
+	using HumidityChangeSignal = boost::signals2::signal<void(double humidity)>;
+	using PressureChangeSignal = boost::signals2::signal<void(double pressure)>;
+
+	Connection DoOnTemperatureChange(const TemperatureChangeSignal::slot_type& slot)
+	{
+		return m_temperatureChangeSignal.connect(slot);
+	}
+	Connection DoOnHumidityChange(const HumidityChangeSignal::slot_type& slot)
+	{
+		return m_humidityChangeSignal.connect(slot);
+	}
+	Connection DoOnPressureChange(const PressureChangeSignal::slot_type& slot)
+	{
+		return m_pressureChangeSignal.connect(slot);
+	}
+
+	void SetMeasurements(double temperature, double humidity, double pressure)
+	{
+		if (m_temperature != temperature)
+		{
+			m_temperature = temperature;
+			m_temperatureChangeSignal(temperature);
+		}
+
+		if (m_humidity != humidity)
+		{
+			m_humidity = humidity;
+			m_humidityChangeSignal(humidity);
+		}
+
+		if (m_pressure != pressure)
+		{
+			m_pressure = pressure;
+			m_pressureChangeSignal(pressure);
+		}
+	}
+
+private:
+	double m_temperature = 0;
+	double m_humidity = 0;
+	double m_pressure = 0;
+
+	TemperatureChangeSignal m_temperatureChangeSignal;
+	HumidityChangeSignal m_humidityChangeSignal;
+	PressureChangeSignal m_pressureChangeSignal;
 };
 
 class IStatisticCalculator
 {
 public:
 	virtual void UpdateStatistic(double value) = 0;
-	virtual void PrintStatistic(const std::string& name) = 0;
-
 	virtual ~IStatisticCalculator() = default;
 };
 
@@ -99,30 +190,35 @@ public:
 		m_acc += data;
 		++m_countAcc;
 	}
-	void PrintStatistic(const std::string& name) override
+	std::optional<double> GetMaxValue() const
 	{
-		std::cout << "Max " << name << " " << GetMaxValue() << std::endl;
-		std::cout << "Min " << name << " " << GetMinValue() << std::endl;
-		std::cout << "Average " << name << " " << GetAverageValue() << "" << std::endl;
-		std::cout << "----------------" << std::endl;
-	}
-	double GetMaxValue() const
-	{
+		if (m_max == -std::numeric_limits<double>::infinity())
+		{
+			return std::nullopt;
+		}
 		return m_max;
 	}
-	double GetMinValue() const
+	std::optional<double> GetMinValue() const
 	{
+		if (m_min == std::numeric_limits<double>::infinity())
+		{
+			return std::nullopt;
+		}
 		return m_min;
 	}
-	double GetAverageValue() const
+	std::optional<double> GetAverageValue() const
 	{
+		double avg = m_acc / m_countAcc;
+		if (m_countAcc == 0)
+		{
+			return std::nullopt;
+		}
 		return m_acc / m_countAcc;
 	}
 
 private:
-	std::string m_statisticType;
-	double m_min = std::numeric_limits<double>::infinity();
-	double m_max = -std::numeric_limits<double>::infinity();
+	std::optional<double> m_min = std::numeric_limits<double>::infinity();
+	std::optional<double> m_max = -std::numeric_limits<double>::infinity();
 	double m_acc = 0;
 	unsigned m_countAcc = 0;
 };
@@ -144,11 +240,9 @@ public:
 			m_average = avg + 360;
 		}
 	}
-
-	void PrintStatistic(const std::string& name) override
+	double GetAverageDirection() const
 	{
-		std::cout << "Average " << name << " " << m_average << std::endl;
-		std::cout << "----------------" << std::endl;
+		return m_average;
 	}
 
 private:
@@ -173,17 +267,30 @@ struct SWeatherStatisticPro
 	CDirectionStatCalculator windDirectionStat;
 };
 
-class CStatDisplay
+
+class COutsideStatDisplay
 {
 public:
-	CStatDisplay(CWeatherData<SWeatherInfo>& innerStation, CWeatherData<SWeatherInfoPro>& outerStation)
+	COutsideStatDisplay(COutsideWeatherData& outerStation)
 	{
-		m_innerConnection = innerStation.DoOnWeatherChange([this](const SWeatherInfo& innerInfo) {
-			CalculateInnerStatistic(innerInfo);
-			PrintInnerStatistic();
+		m_temperatureChangeConnection = outerStation.DoOnTemperatureChange([this](double value) {
+			m_outerStatistic.temperatureStat.UpdateStatistic(value);
+			PrintOuterStatistic();
 		});
-		m_outerConnection = outerStation.DoOnWeatherChange([this](const SWeatherInfoPro& outerInfo) {
-			CalculateOuterStatistic(outerInfo);
+		m_humidityChangeConnection = outerStation.DoOnHumidityChange([this](double value) {
+			m_outerStatistic.humidityStat.UpdateStatistic(value);
+			PrintOuterStatistic();
+		});
+		m_pressureChangeConnection = outerStation.DoOnPressureChange([this](double value) {
+			m_outerStatistic.pressureStat.UpdateStatistic(value);
+			PrintOuterStatistic();
+		});
+		m_windSpeedChangeConnection = outerStation.DoOnWindSpeedChange([this](double value) {
+			m_outerStatistic.windSpeedStat.UpdateStatistic(value);
+			PrintOuterStatistic();
+		});
+		m_windDirectionChangeConnection = outerStation.DoOnWindDirectionChange([this](double value) {
+			m_outerStatistic.windDirectionStat.UpdateStatistic(value);
 			PrintOuterStatistic();
 		});
 	}
@@ -197,75 +304,85 @@ private:
 		m_outerStatistic.windSpeedStat.UpdateStatistic(outerInfo.wind.speed);
 		m_outerStatistic.windDirectionStat.UpdateStatistic(outerInfo.wind.direction);
 	}
-	void CalculateInnerStatistic(const SWeatherInfo& innerInfo)
-	{
-		m_innerStatistic.temperatureStat.UpdateStatistic(innerInfo.temperature);
-		m_innerStatistic.humidityStat.UpdateStatistic(innerInfo.humidity);
-		m_innerStatistic.pressureStat.UpdateStatistic(innerInfo.pressure);
-	}
 	void PrintOuterStatistic()
 	{
 		std::cout << "------------Statisitic weather outside----------------\n";
-		m_outerStatistic.temperatureStat.PrintStatistic("temperature");
-		m_outerStatistic.humidityStat.PrintStatistic("humidity");
-		m_outerStatistic.pressureStat.PrintStatistic("pressure");
-		m_outerStatistic.windSpeedStat.PrintStatistic("wind speed");
-		m_outerStatistic.windDirectionStat.PrintStatistic("wind direction");
+		PrintSpecificStatistic("temperature", m_outerStatistic.temperatureStat);
+		PrintSpecificStatistic("humidity", m_outerStatistic.humidityStat);
+		PrintSpecificStatistic("pressure", m_outerStatistic.pressureStat);
+		PrintSpecificStatistic("wind speed", m_outerStatistic.windSpeedStat);
+		PrintWindDirectionStatistic("wind direction", m_outerStatistic.windDirectionStat);
 		std::cout << "------------Statisitic weather outside----------------\n";
 	}
-	void PrintInnerStatistic()
+	void PrintSpecificStatistic(const std::string name, const CStatCalculator& value)
 	{
-		std::cout << "------------Statisitic weather inside----------------\n";
-		m_innerStatistic.temperatureStat.PrintStatistic("temperature");
-		m_innerStatistic.humidityStat.PrintStatistic("humidity");
-		m_innerStatistic.pressureStat.PrintStatistic("pressure");
-		std::cout << "------------Statisitic weather inside----------------\n";
+			std::cout << "Max " << name << " " << (value.GetMaxValue().has_value() ? std::to_string(value.GetMaxValue().value()) : "-")  << std::endl;
+			std::cout << "Min " << name << " " << (value.GetMinValue().has_value() ? std::to_string(value.GetMinValue().value()) : "-") << std::endl;
+			std::cout << "Average " << name << " " << (value.GetAverageValue().has_value() ? std::to_string(value.GetAverageValue().value()) : "-") << "" << std::endl;
+			std::cout << "----------------" << std::endl;
+	}
+	void PrintWindDirectionStatistic(const std::string name, const CDirectionStatCalculator& value)
+	{
+		std::cout << "Average " << name << " " << value.GetAverageDirection() << "" << std::endl;
+		std::cout << "----------------" << std::endl;
 	}
 
+private:
 
-	ScopedConnection m_innerConnection;
-	ScopedConnection m_outerConnection;
+	ScopedConnection m_temperatureChangeConnection;
+	ScopedConnection m_humidityChangeConnection;
+	ScopedConnection m_pressureChangeConnection;
+	ScopedConnection m_windSpeedChangeConnection;
+	ScopedConnection m_windDirectionChangeConnection;
 
 	SWeatherStatisticPro m_outerStatistic;
-	SWeatherStatistic m_innerStatistic;
 };
 
-
-class CDisplay
+class CInsideStatDisplay
 {
 public:
-	CDisplay(CWeatherData<SWeatherInfo>& innerStation, CWeatherData<SWeatherInfoPro>& outerStation)
+	CInsideStatDisplay(CInsideWeatherData& innerStation)
 	{
-		m_innerConnection = innerStation.DoOnWeatherChange([this](const SWeatherInfo& innerInfo) {
-			PrintInnerInfo(innerInfo);
+		m_temperatureChangeConnection = innerStation.DoOnTemperatureChange([this](double value) {
+			m_innerStatistic.temperatureStat.UpdateStatistic(value);
+			PrintInnerStatistic();
 		});
-		m_outerConnection = outerStation.DoOnWeatherChange([this](const SWeatherInfoPro& outerInfo) {
-			PrintOuterInfo(outerInfo);
+		m_humidityChangeConnection = innerStation.DoOnHumidityChange([this](double value) {
+			m_innerStatistic.humidityStat.UpdateStatistic(value);
+			PrintInnerStatistic();
+		});
+		m_pressureChangeConnection = innerStation.DoOnPressureChange([this](double value) {
+			m_innerStatistic.pressureStat.UpdateStatistic(value);
+			PrintInnerStatistic();
 		});
 	}
 
 private:
-	void PrintOuterInfo(const SWeatherInfoPro& outerInfo)
+
+	void PrintInnerStatistic()
 	{
-		std::cout << "------------Current weather outside----------------\n";
-		std::cout << "Current Temp " << outerInfo.basicInfo.temperature << std::endl;
-		std::cout << "Current Hum " << outerInfo.basicInfo.humidity << std::endl;
-		std::cout << "Current Pressure " << outerInfo.basicInfo.pressure << std::endl;
-		std::cout << "Current Wind speed " << outerInfo.wind.speed << std::endl;
-		std::cout << "Current Wind direction " << outerInfo.wind.direction << std::endl;
-		std::cout << "------------Current weather outside----------------\n";
+		std::cout << "------------Statisitic weather inside----------------\n";
+		PrintSpecificStatistic("temperature", m_innerStatistic.temperatureStat);
+		PrintSpecificStatistic("humidity", m_innerStatistic.humidityStat);
+		PrintSpecificStatistic("pressure", m_innerStatistic.pressureStat);
+		std::cout << "------------Statisitic weather inside----------------\n";
 	}
-	void PrintInnerInfo(const SWeatherInfo& innerInfo)
+
+	void PrintSpecificStatistic(const std::string name, const CStatCalculator& value)
 	{
-		std::cout << "------------Current weather inside----------------\n";
-		std::cout << "Current Temp " << innerInfo.temperature << std::endl;
-		std::cout << "Current Hum " << innerInfo.humidity << std::endl;
-		std::cout << "Current Pressure " << innerInfo.pressure << std::endl;
-		std::cout << "------------Current weather inside----------------\n";
+		std::cout << "Max " << name << " " << (value.GetMaxValue().has_value() ? std::to_string(value.GetMaxValue().value()) : "-") << std::endl;
+		std::cout << "Min " << name << " " << (value.GetMinValue().has_value() ? std::to_string(value.GetMinValue().value()) : "-") << std::endl;
+		std::cout << "Average " << name << " " << (value.GetAverageValue().has_value() ? std::to_string(value.GetAverageValue().value()) : "-") << "" << std::endl;
+		std::cout << "----------------" << std::endl;
 	}
-	
-	ScopedConnection m_innerConnection;
-	ScopedConnection m_outerConnection;
+
+
+
+	ScopedConnection m_temperatureChangeConnection;
+	ScopedConnection m_humidityChangeConnection;
+	ScopedConnection m_pressureChangeConnection;
+
+	SWeatherStatistic m_innerStatistic;
 };
 
 
