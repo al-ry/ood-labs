@@ -28,7 +28,7 @@ BOOST_FIXTURE_TEST_SUITE(Test_memory_output_stream, EmptyMemoryOutputStream)
 		{
 			std::array<uint8_t, 5> arr = { 0, 1, 2, 3, 4 };
 			stream.WriteBlock(arr.data(), arr.size());
-			for (std::streamsize i = 0; i < arr.size(); i++)
+			for (std::size_t i = 0; i < arr.size(); i++)
 			{
 				BOOST_CHECK(bytes.at((size_t)i) == i);
 			}

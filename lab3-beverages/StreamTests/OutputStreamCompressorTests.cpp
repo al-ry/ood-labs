@@ -3,6 +3,9 @@
 #include "../Streams/CMemoryOutputStream.h"
 #include "../Streams/CFileOutputStream.h"
 #include "TestsUtils.h"
+#include <filesystem>
+
+const auto tempPath = std::filesystem::temp_directory_path();
 
 void WriteRepeatedByte(size_t amount, uint8_t data, std::unique_ptr<COutputStreamCompressor>& stream)
 {
@@ -16,40 +19,40 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 	BOOST_AUTO_TEST_SUITE(Test_write_byte)
 		BOOST_AUTO_TEST_CASE(compress_0_bytes)
 		{
-			auto stream = std::make_unique<CFileOutputStream>("test_files/compress0bytes.bin");
+			auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress0bytes.bin");
 			auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
-			std::string result = GetFileContent("test_files/compress0bytes.bin");
+			std::string result = GetFileContent(tempPath.string() + "compress0bytes.bin");
 			BOOST_CHECK(result == "");
 		}
 		BOOST_AUTO_TEST_CASE(compress_1_bytes)
 		{
 			{		
-				auto stream = std::make_unique<CFileOutputStream>("test_files/compress1byte.bin");
+				auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress1byte.bin");
 				auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 				compressedStream->WriteByte(48);
 			}
-			std::string result = GetFileContent("test_files/compress1byte.bin");
+			std::string result = GetFileContent(tempPath.string() + "compress1byte.bin");
 			BOOST_CHECK_EQUAL(result, "\x1\x30");
 		}
 		BOOST_AUTO_TEST_CASE(can_compress_50_identical_bytes)
 		{
 			{
-				auto stream = std::make_unique<CFileOutputStream>("test_files/compress50bytes.bin");
+				auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress50bytes.bin");
 				auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 				WriteRepeatedByte(50, 48, compressedStream);
 			}
-			std::string result = GetFileContent("test_files/compress50bytes.bin");
+			std::string result = GetFileContent(tempPath.string() + "compress50bytes.bin");
 			BOOST_CHECK_EQUAL(result, "\x32\x30");
 		}
 		BOOST_AUTO_TEST_SUITE(when_gives_255_bytes)
 			BOOST_AUTO_TEST_CASE(should_compress_255_bytes)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress255bytes.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress255bytes.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					WriteRepeatedByte(255, 48, compressedStream);
 				}
-				std::string result = GetFileContent("test_files/compress255bytes.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress255bytes.bin");
 				BOOST_CHECK_EQUAL(result, "\xFF\x30");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -57,11 +60,11 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 			BOOST_AUTO_TEST_CASE(should_separate_bytes_to_differents_packages)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress300bytes.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress300bytes.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					WriteRepeatedByte(300, 48, compressedStream);
 				}
-				std::string result = GetFileContent("test_files/compress300bytes.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress300bytes.bin");
 				BOOST_CHECK_EQUAL(result, "\xFF\x30\x2D\x30");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -69,12 +72,12 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 			BOOST_AUTO_TEST_CASE(should_compress_these_to_different_packs)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress_two_diffrent_sequences.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress_two_diffrent_sequences.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					WriteRepeatedByte(50, 48, compressedStream);
 					WriteRepeatedByte(20, 50, compressedStream);
 				}
-				std::string result = GetFileContent("test_files/compress_two_diffrent_sequences.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress_two_diffrent_sequences.bin");
 				BOOST_CHECK_EQUAL(result, "\x32\x30\x14\x32");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -84,35 +87,35 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 		{
 
 			{
-				auto stream = std::make_unique<CFileOutputStream>("test_files/compress1byte.bin");
+				auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress1byte.bin");
 				auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 				std::array<uint8_t, 1> arr = { 1 };
 				compressedStream->WriteBlock(arr.data(), arr.size());
 			}
-			std::string result = GetFileContent("test_files/compress1byte.bin");
+			std::string result = GetFileContent(tempPath.string() + "compress1byte.bin");
 			BOOST_CHECK_EQUAL(result, "\x1\x1");
 		}
 		BOOST_AUTO_TEST_CASE(can_compress_50_identical_bytes)
 		{
 			{
-				auto stream = std::make_unique<CFileOutputStream>("test_files/compress50bytes.bin");
+				auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress50bytes.bin");
 				auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 				std::vector<uint8_t> arr = PushIdenticalSymbolsToArray(50, 48);
 				compressedStream->WriteBlock(arr.data(), arr.size());
 			}
-			std::string result = GetFileContent("test_files/compress50bytes.bin");
+			std::string result = GetFileContent(tempPath.string() + "compress50bytes.bin");
 			BOOST_CHECK_EQUAL(result, "\x32\x30");
 		}
 		BOOST_AUTO_TEST_SUITE(when_gives_255_bytes)
 			BOOST_AUTO_TEST_CASE(should_compress_255_bytes)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress255bytes.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress255bytes.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					std::vector<uint8_t> arr = PushIdenticalSymbolsToArray(255, 48);
 					compressedStream->WriteBlock(arr.data(), arr.size());
 				}
-				std::string result = GetFileContent("test_files/compress255bytes.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress255bytes.bin");
 				BOOST_CHECK_EQUAL(result, "\xFF\x30");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -120,12 +123,12 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 			BOOST_AUTO_TEST_CASE(should_separate_bytes_to_differents_packages)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress300bytes.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress300bytes.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					std::vector<uint8_t> arr = PushIdenticalSymbolsToArray(300, 48);
 					compressedStream->WriteBlock(arr.data(), arr.size());
 				}
-				std::string result = GetFileContent("test_files/compress300bytes.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress300bytes.bin");
 				BOOST_CHECK_EQUAL(result, "\xFF\x30\x2D\x30");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -133,14 +136,14 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 			BOOST_AUTO_TEST_CASE(should_compress_these_to_different_packs)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress_two_diffrent_sequences.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress_two_diffrent_sequences.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					std::vector<uint8_t> arr1 = PushIdenticalSymbolsToArray(50, 48);
 					compressedStream->WriteBlock(arr1.data(), arr1.size());
 					std::vector<uint8_t> arr2 = PushIdenticalSymbolsToArray(20, 50);
 					compressedStream->WriteBlock(arr2.data(), arr2.size());
 				}
-				std::string result = GetFileContent("test_files/compress_two_diffrent_sequences.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress_two_diffrent_sequences.bin");
 				BOOST_CHECK_EQUAL(result, "\x32\x30\x14\x32");
 			}
 		BOOST_AUTO_TEST_SUITE_END()
@@ -148,12 +151,12 @@ BOOST_AUTO_TEST_SUITE(Test_compress_decorator_for_file_output_stream)
 			BOOST_AUTO_TEST_CASE(should_divide_these_to_different_packs)
 			{
 				{
-					auto stream = std::make_unique<CFileOutputStream>("test_files/compress_two_diffrent_sequences.bin");
+					auto stream = std::make_unique<CFileOutputStream>(tempPath.string() + "compress_two_diffrent_sequences.bin");
 					auto compressedStream = std::make_unique<COutputStreamCompressor>(std::move(stream));
 					std::array<uint8_t, 5> arr = { 1, 2, 3, 4, 5 };
 					compressedStream->WriteBlock(arr.data(), arr.size());
 				}
-				std::string result = GetFileContent("test_files/compress_two_diffrent_sequences.bin");
+				std::string result = GetFileContent(tempPath.string() + "compress_two_diffrent_sequences.bin");
 				BOOST_CHECK_EQUAL(result, "\x1\x1\x1\x2\x1\x3\x1\x4\x1\x5");
 			}
 		BOOST_AUTO_TEST_SUITE_END()

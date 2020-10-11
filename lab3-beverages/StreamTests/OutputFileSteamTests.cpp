@@ -2,8 +2,10 @@
 #include "../Streams/CFileOutputStream.h"
 #include "../Streams/CFileInputStream.h"
 #include "TestsUtils.h"
+#include <filesystem>
 
-const std::string FILE_NAME = "test_files/output_stream_test.bin";
+const auto tempPath = std::filesystem::temp_directory_path();
+const std::string FILE_NAME = tempPath.string() + "/output_stream_test.bin";
 
 BOOST_AUTO_TEST_SUITE(Test_output_file_stream)
 	BOOST_AUTO_TEST_CASE(can_write_byte_to_stream)

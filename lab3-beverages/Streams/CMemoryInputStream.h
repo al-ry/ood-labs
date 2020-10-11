@@ -26,7 +26,7 @@ public:
 
 	std::streamsize ReadBlock(void* dstBuffer, std::streamsize size) override
 	{
-		if (size > m_memoryStream.size() - m_pos)
+		if (static_cast<std::size_t>(size) > m_memoryStream.size() - m_pos)
 		{
 			size = m_memoryStream.size() - m_pos;
 		}

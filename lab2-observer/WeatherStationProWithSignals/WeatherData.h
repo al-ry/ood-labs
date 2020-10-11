@@ -5,6 +5,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <optional>
+#include <iomanip>
 using Connection = boost::signals2::connection;
 using ScopedConnection = boost::signals2::scoped_connection;
 
@@ -316,10 +317,10 @@ private:
 	}
 	void PrintSpecificStatistic(const std::string name, const CStatCalculator& value)
 	{
-			std::cout << "Max " << name << " " << (value.GetMaxValue().has_value() ? std::to_string(value.GetMaxValue().value()) : "-")  << std::endl;
-			std::cout << "Min " << name << " " << (value.GetMinValue().has_value() ? std::to_string(value.GetMinValue().value()) : "-") << std::endl;
-			std::cout << "Average " << name << " " << (value.GetAverageValue().has_value() ? std::to_string(value.GetAverageValue().value()) : "-") << "" << std::endl;
-			std::cout << "----------------" << std::endl;
+		std::cout << "Max " << name << " "  << (value.GetMaxValue().has_value() ? std::to_string(value.GetMaxValue().value()) : "-")  << std::endl;
+		std::cout << "Min " << name << " " << (value.GetMinValue().has_value() ? std::to_string(value.GetMinValue().value()) : "-") << std::endl;
+		std::cout << "Average " << name << " " << (value.GetAverageValue().has_value() ? std::to_string(value.GetAverageValue().value()) : "-") << "" << std::endl;
+		std::cout << "----------------" << std::endl;
 	}
 	void PrintWindDirectionStatistic(const std::string name, const CDirectionStatCalculator& value)
 	{
@@ -370,6 +371,7 @@ private:
 
 	void PrintSpecificStatistic(const std::string name, const CStatCalculator& value)
 	{
+		std::cout << std::setprecision(2);
 		std::cout << "Max " << name << " " << (value.GetMaxValue().has_value() ? std::to_string(value.GetMaxValue().value()) : "-") << std::endl;
 		std::cout << "Min " << name << " " << (value.GetMinValue().has_value() ? std::to_string(value.GetMinValue().value()) : "-") << std::endl;
 		std::cout << "Average " << name << " " << (value.GetAverageValue().has_value() ? std::to_string(value.GetAverageValue().value()) : "-") << "" << std::endl;

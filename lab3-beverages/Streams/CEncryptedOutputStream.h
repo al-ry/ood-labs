@@ -23,7 +23,7 @@ public:
 	void WriteBlock(const void* srcData, std::streamsize size) override
 	{
 		const uint8_t* block = static_cast<const uint8_t*>(srcData);
-		for (size_t i = 0; i < size; i++)
+		for (std::streamsize i = 0; i < size; i++)
 		{
 			WriteByte(block[i]);
 		}

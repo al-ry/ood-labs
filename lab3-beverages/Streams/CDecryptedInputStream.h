@@ -20,7 +20,7 @@ public:
 	{
 		std::streamsize encryptedBytesSize = m_stream->ReadBlock(dstBuffer, size);
 		uint8_t* buffer = static_cast<uint8_t*>(dstBuffer);
-		for (size_t i = 0; i < encryptedBytesSize; i++)
+		for (std::streamsize i = 0; i < encryptedBytesSize; i++)
 		{
 			buffer[i] = m_encodingTable.GetDecrytedByte(buffer[i]);
 		}

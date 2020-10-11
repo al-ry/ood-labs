@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "../Streams/CFileInputStream.h"
 #include <filesystem>
+#include "../Streams/CFileOutputStream.h"
 
-auto tempPath = std::filesystem::temp_directory_path();
+const auto tempPath = std::filesystem::temp_directory_path();
 
 struct EmptyInputStream
 {
+	CFileOutputStream outputStream;
 	CFileInputStream fileStream;
 	EmptyInputStream()
-		: fileStream("test_files/empty.bin"){
+		: outputStream(tempPath.string() + "empty.bin")
+		, fileStream(tempPath.string() + "empty.bin")
+	{
 	}
 };
 
@@ -30,10 +34,14 @@ BOOST_FIXTURE_TEST_SUITE(Test_file_input_stream, EmptyInputStream)
 
 	struct StreamWithData
 	{
+		CFileOutputStream outputStream;
 		CFileInputStream inputStream;
 		StreamWithData()
-			: inputStream("test_files/data.bin")
+			: outputStream(tempPath.string() + "data.bin")
+			, inputStream(tempPath.string() + "data.bin")
 		{
+
+			outputStream.WriteBlock("qwerty!", 7);
 		}
 	};
 	BOOST_FIXTURE_TEST_SUITE(when_stream_contains_data, StreamWithData)
