@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "../libpainter/IPainter.h"
 #include "../libpainter/Painter.h"
 #include "MockCanvas.h"
 #include <boost\test\tools\output_test_stream.hpp>

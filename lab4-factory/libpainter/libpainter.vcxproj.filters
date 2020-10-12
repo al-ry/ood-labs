@@ -51,9 +51,6 @@
     <ClInclude Include="IShapeFactory.h">
       <Filter>Source Files\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="IDesigner.h">
-      <Filter>Source Files\Designer</Filter>
-    </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Source Files\Shapes</Filter>
     </ClInclude>
@@ -80,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="CCanvas.h">
       <Filter>Source Files\Canvas</Filter>
-    </ClInclude>
-    <ClInclude Include="IPainter.h">
-      <Filter>Source Files\Painter</Filter>
     </ClInclude>
     <ClInclude Include="Painter.h">
       <Filter>Source Files\Painter</Filter>

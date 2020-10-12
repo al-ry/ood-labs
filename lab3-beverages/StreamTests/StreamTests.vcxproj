@@ -157,7 +157,7 @@
     <ClCompile Include="EncodingTests.cpp" />
     <ClCompile Include="InputStreamDecompressTests.cpp" />
     <ClCompile Include="OutputStreamCompressorTests.cpp" />
-    <ClCompile Include="OutputFileSteamTests.cpp" />
+    <ClCompile Include="FileOutputSteamTests.cpp" />
     <ClCompile Include="InputFileStreamTests.cpp" />
     <ClCompile Include="InputMemoryStreamTests.cpp" />
     <ClCompile Include="MemoryOutputStreamTests.cpp" />

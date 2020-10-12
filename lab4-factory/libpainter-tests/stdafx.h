@@ -11,6 +11,8 @@
 #include <tchar.h>
 
 #include <sstream>
+#include <boost/range/algorithm/copy.hpp>
+#include <boost/algorithm/cxx11/all_of.hpp>
 
 #define BOOST_TEST_INCLUDED
 #pragma warning (push, 3)
@@ -18,7 +20,5 @@
 #include <boost/test/unit_test.hpp>
 #pragma warning (pop)
 
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/algorithm/cxx11/all_of.hpp>
 
 // TODO: reference additional headers your program requires here

@@ -161,13 +161,11 @@
     <ClInclude Include="CCanvas.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ICanvas.h" />
-    <ClInclude Include="IPainter.h" />
     <ClInclude Include="Painter.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="ShapeFactory.h" />
     <ClInclude Include="Designer.h" />
     <ClInclude Include="Ellipse.h" />
-    <ClInclude Include="IDesigner.h" />
     <ClInclude Include="IShapeFactory.h" />
     <ClInclude Include="PictureDraft.h" />
     <ClInclude Include="Rectangle.h" />

@@ -27,9 +27,6 @@
     <ClCompile Include="InputFileStreamTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OutputFileSteamTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MemoryOutputStreamTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,6 +37,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EncodingTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileOutputSteamTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
