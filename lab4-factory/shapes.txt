@@ -1,0 +1,4 @@
+ellipse pink 0 0 0.1 0.1
+rectangle green 0 0 0.8 0.3
+triangle yellow 0 0 0.2 0.4 0.4 0
+regular_polygon blue -0.5 -0.5 0.5 6
