@@ -226,15 +226,6 @@ private:
 
 int main()
 {
-	//CDocument document;
-	//document.InsertParagraph("text1", 0);
-	//document.InsertParagraph("text2", 1);
-	//document.InsertParagraph("text3", 2);
-	//document.InsertParagraph("text4", 2);
-	//document.InsertParagraph("text5", 3);
-	//document.Undo();
-	//document.Undo();
-	//document.Undo();
 	setlocale(LC_ALL, "Russian");
 	CEditor editor;
 	editor.Start();
