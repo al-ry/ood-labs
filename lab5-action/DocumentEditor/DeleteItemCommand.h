@@ -2,8 +2,6 @@
 #include "AbstractCommand.h"
 #include <vector>
 #include "DocumentItem.h"
-#include <boost\optional\optional.hpp>
-
 
 class CDeleteItemCommand: public CAbstractCommand
 {
