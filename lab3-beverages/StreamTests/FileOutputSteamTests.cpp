@@ -4,6 +4,7 @@
 #include "TestsUtils.h"
 #include <filesystem>
 
+typedef std::filesystem::path Path;
 const auto tempPath = std::filesystem::temp_directory_path();
 const std::string FILE_NAME = tempPath.string() + "/output_stream_test.bin";
 
