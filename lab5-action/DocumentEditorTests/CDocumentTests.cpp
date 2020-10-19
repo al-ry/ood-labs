@@ -231,7 +231,7 @@ BOOST_FIXTURE_TEST_SUITE(Test_CDocument, Document_)
 			BOOST_AUTO_TEST_CASE(should_decrease_items_size)
 			{
 				BOOST_CHECK(document.GetItemsCount() == 2);
-				BOOST_CHECK_THROW(std::addressof(*document.GetItem(2).GetParagraph()), std::runtime_error);
+				BOOST_CHECK_THROW(document.GetItem(2), std::runtime_error);
 			}
 			BOOST_AUTO_TEST_SUITE(when_undo)
 				BOOST_AUTO_TEST_CASE(should_return_size_and_item_back)
@@ -248,7 +248,7 @@ BOOST_FIXTURE_TEST_SUITE(Test_CDocument, Document_)
 					document.Undo();
 					document.Redo();
 					BOOST_CHECK(document.GetItemsCount() == 2);
-					BOOST_CHECK_THROW(std::addressof(*document.GetItem(2).GetParagraph()), std::runtime_error);
+					BOOST_CHECK_THROW(document.GetItem(2), std::runtime_error);
 				}
 			BOOST_AUTO_TEST_SUITE_END()
 		BOOST_AUTO_TEST_SUITE_END() 
@@ -281,7 +281,7 @@ BOOST_FIXTURE_TEST_SUITE(Test_CDocument, Document_)
 					document.Undo();
 					document.Redo();
 					BOOST_CHECK(document.GetItemsCount() == 2);
-					BOOST_CHECK_THROW(std::addressof(*document.GetItem(2).GetParagraph()), std::runtime_error);
+					BOOST_CHECK_THROW(document.GetItem(2), std::runtime_error);
 				}
 			BOOST_AUTO_TEST_SUITE_END()
 		BOOST_AUTO_TEST_SUITE_END() 
