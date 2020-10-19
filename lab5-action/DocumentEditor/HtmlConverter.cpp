@@ -26,7 +26,7 @@ void CHtmlConverter::Save(const Path& storePath)
 	std::ofstream file(storePath.generic_string());
 	if (!file.is_open())
 	{
-		throw std::runtime_error("Cannot opern file: " + storePath.generic_string());
+		throw std::runtime_error("Cannot open file: " + storePath.generic_string());
 	}
 
 	 file << "<!DOCTYPE html>\n<html>\n<head>\n\t<title>"
