@@ -3,6 +3,7 @@
 #include <vector>
 #include "DocumentItem.h"
 
+
 class CDeleteItemCommand: public CAbstractCommand
 {
 public:

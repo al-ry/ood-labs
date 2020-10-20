@@ -1,24 +1,19 @@
 #include "stdafx.h"
 #include "../DocumentEditor/Paragraph.h"
-
+#include "MockAdapter.h"
 
 struct Paragraph_
 {
-	std::string text = "paragraph";
-	CParagraph paragraph;
-	CHistory history;
-	Paragraph_()
-		: paragraph(text, history)
-		, history()
-	{
-	}
+	std::stringstream ss;
+	std::unique_ptr<MockAdapter> adapter = std::make_unique<MockAdapter>(ss);
+	CParagraph paragraph = CParagraph("paragraph", std::move(adapter));
 };
 
 BOOST_FIXTURE_TEST_SUITE(Test_CPragraph, Paragraph_)
 	BOOST_AUTO_TEST_SUITE(by_default)
 		BOOST_AUTO_TEST_CASE(can_obtain_paragraph_content)
 		{
-			BOOST_CHECK(paragraph.GetText() == "paragraph");
+			BOOST_CHECK_EQUAL(paragraph.GetText(), "paragraph");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	struct AfterChangingText_ : Paragraph_
@@ -31,22 +26,10 @@ BOOST_FIXTURE_TEST_SUITE(Test_CPragraph, Paragraph_)
 
 	};
 	BOOST_FIXTURE_TEST_SUITE(AfterChangingText, AfterChangingText_)
-		BOOST_AUTO_TEST_CASE(can_undo)
+
+		BOOST_AUTO_TEST_CASE(delegates_adding_command_to_adapter)
 		{
-			BOOST_CHECK(paragraph.GetText() == textNew);
-			BOOST_CHECK(history.CanUndo());
-			history.Undo();
-			BOOST_CHECK(paragraph.GetText() == "paragraph");
-		}
-		BOOST_AUTO_TEST_CASE(can_redo)
-		{
-			BOOST_CHECK(paragraph.GetText() == textNew);
-			BOOST_CHECK(history.CanUndo());
-			history.Undo();
-			BOOST_CHECK(paragraph.GetText() == "paragraph");
-			BOOST_CHECK(history.CanRedo());
-			history.Redo();
-			BOOST_CHECK_EQUAL(paragraph.GetText(), textNew);
+			BOOST_CHECK(ss.str() == "Command Added\n");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

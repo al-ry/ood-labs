@@ -1,8 +1,8 @@
 #include "Paragraph.h"
 #include "ChangeStringCommand.h"
-CParagraph::CParagraph(const std::string& text, CHistory& history)
+CParagraph::CParagraph(const std::string& text, ICommandSinkPtr&& command)
 	: m_text(text)
-	, m_history(history)
+	, m_commandSink(std::move(command))
 {
 }
 
@@ -13,5 +13,5 @@ std::string CParagraph::GetText() const
 
 void CParagraph::SetText(const std::string& text)
 {
-	m_history.AddAndExecuteCommand(std::make_unique<CChangeStringCommand>(m_text, text));
+	m_commandSink->AddCommand(std::make_unique<CChangeStringCommand>(m_text, text));
 }

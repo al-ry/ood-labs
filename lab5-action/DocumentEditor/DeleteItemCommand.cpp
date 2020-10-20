@@ -1,4 +1,5 @@
 #include "DeleteItemCommand.h"
+#include <stdexcept>
 
 CDeleteItemCommand::CDeleteItemCommand(std::vector<DocumentItemPtr>& documentItems, size_t position)
 	: m_items(documentItems)

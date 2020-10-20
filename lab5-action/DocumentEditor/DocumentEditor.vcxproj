@@ -147,6 +147,7 @@
     <ClCompile Include="AbstractCommand.cpp" />
     <ClCompile Include="DeleteItemCommand.cpp" />
     <ClCompile Include="ChangeStringCommand.cpp" />
+    <ClCompile Include="HistoryAdapter.cpp" />
     <ClCompile Include="HtmlConverter.cpp" />
     <ClCompile Include="InsertItemCommand.cpp" />
     <ClCompile Include="ResizeCommand.cpp" />
@@ -162,9 +163,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractCommand.h" />
+    <ClInclude Include="HistoryAdapter.h" />
     <ClInclude Include="HtmlConverter.h" />
     <ClInclude Include="DeleteItemCommand.h" />
     <ClInclude Include="ChangeStringCommand.h" />
+    <ClInclude Include="ICommandSink.h" />
     <ClInclude Include="InsertItemCommand.h" />
     <ClInclude Include="ResizeCommand.h" />
     <ClInclude Include="Document.h" />

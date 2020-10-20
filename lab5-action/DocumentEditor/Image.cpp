@@ -12,8 +12,8 @@ bool CImage::IsCorrectImageSize(int height, int width)
 	return (height < MIN_IMAGE_SIZE || width < MIN_IMAGE_SIZE || width > MAX_IMAGE_SIZE || height > MAX_IMAGE_SIZE);
 }
 
-CImage::CImage(const Path& path, int width, int height, CHistory& history)
-	: m_history(history)
+CImage::CImage(const Path& path, int width, int height, ICommandSinkPtr&& command)
+	: m_commandSink(std::move(command))
 {
 	if (IsCorrectImageSize(height, width))
 	{
@@ -54,6 +54,6 @@ int CImage::GetHeight() const
 
 void CImage::Resize(int width, int height)
 {
-	m_history.AddAndExecuteCommand(std::make_unique<CResizeCommand>(m_height, m_width, height, width));
+	m_commandSink->AddCommand(std::make_unique<CResizeCommand>(m_height, m_width, height, width));
 }
 

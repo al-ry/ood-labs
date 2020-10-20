@@ -1,15 +1,16 @@
 #include "stdafx.h"
 #include "../DocumentEditor/Image.h"
-
+#include "MockAdapter.h"
 struct Image_
 {
+	std::stringstream ss;
+	std::unique_ptr<MockAdapter> adapter = std::make_unique<MockAdapter>(ss);
 	int width = 400;
 	int height = 200;
 	Path path = Path("../DocumentEditorTests/test_img/boost.png");
 	CImage image;
-	CHistory history;
 	Image_()
-		: image(path, width, height, history)
+		: image(path, width, height, std::move(adapter))
 	{
 	}
 };
@@ -35,28 +36,9 @@ BOOST_FIXTURE_TEST_SUITE(Test_CImage, Image_)
 		}
 	};
 	BOOST_FIXTURE_TEST_SUITE(AfterChangingImageSize, AfterChangingImageSize_)
-		BOOST_AUTO_TEST_CASE(has_new_size)
+		BOOST_AUTO_TEST_CASE(delegates_adding_command_to_adapter)
 		{
-			BOOST_CHECK(image.GetHeight() == newHeight);
-			BOOST_CHECK(image.GetWidth() == newWidth);
-		}
-		BOOST_AUTO_TEST_CASE(can_undo)
-		{
-			BOOST_CHECK(history.CanUndo());
-			history.Undo();
-			BOOST_CHECK_EQUAL(image.GetHeight(), height);
-			BOOST_CHECK_EQUAL(image.GetWidth(), width);
-		}
-		BOOST_AUTO_TEST_CASE(can_redo)
-		{
-			BOOST_CHECK(history.CanUndo());
-			history.Undo();
-			BOOST_CHECK_EQUAL(image.GetHeight(), height);
-			BOOST_CHECK_EQUAL(image.GetWidth(), width);
-			BOOST_CHECK(history.CanRedo());
-			history.Redo();
-			BOOST_CHECK_EQUAL(image.GetHeight(), newHeight);
-			BOOST_CHECK_EQUAL(image.GetWidth(), newWidth);
+			BOOST_CHECK(ss.str() == "Command Added\n");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()

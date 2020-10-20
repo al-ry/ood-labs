@@ -162,6 +162,7 @@
     <ClCompile Include="..\DocumentEditor\Document.cpp" />
     <ClCompile Include="..\DocumentEditor\DocumentItem.cpp" />
     <ClCompile Include="..\DocumentEditor\History.cpp" />
+    <ClCompile Include="..\DocumentEditor\HistoryAdapter.cpp" />
     <ClCompile Include="..\DocumentEditor\HtmlConverter.cpp" />
     <ClCompile Include="..\DocumentEditor\Image.cpp" />
     <ClCompile Include="..\DocumentEditor\InsertItemCommand.cpp" />
@@ -181,12 +182,15 @@
     <ClInclude Include="..\DocumentEditor\Document.h" />
     <ClInclude Include="..\DocumentEditor\DocumentItem.h" />
     <ClInclude Include="..\DocumentEditor\History.h" />
+    <ClInclude Include="..\DocumentEditor\HistoryAdapter.h" />
     <ClInclude Include="..\DocumentEditor\HtmlConverter.h" />
+    <ClInclude Include="..\DocumentEditor\ICommandSink.h" />
     <ClInclude Include="..\DocumentEditor\IImage.h" />
     <ClInclude Include="..\DocumentEditor\Image.h" />
     <ClInclude Include="..\DocumentEditor\InsertItemCommand.h" />
     <ClInclude Include="..\DocumentEditor\Paragraph.h" />
     <ClInclude Include="..\DocumentEditor\ResizeCommand.h" />
+    <ClInclude Include="MockAdapter.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

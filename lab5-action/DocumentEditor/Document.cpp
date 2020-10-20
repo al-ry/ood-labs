@@ -6,10 +6,12 @@
 #include "InsertItemCommand.h"
 #include "DeleteItemCommand.h"
 #include "HtmlConverter.h"
+#include "HistoryAdapter.h"
 
 std::shared_ptr<IParagraph> CDocument::InsertParagraph(const std::string& text, optional<size_t> position)
 {
-	auto paragraph = std::make_shared<CParagraph>(text, m_history);
+	auto historyAdapter = std::make_unique<CHistoryAdapter>(m_history);
+	auto paragraph = std::make_shared<CParagraph>(text, std::move(historyAdapter));
 	auto docItem = std::make_shared<CDocumentItem>(paragraph);
 	m_history.AddAndExecuteCommand(std::make_unique<CInsertItemCommand>(m_documentItems, docItem, position));
 	return paragraph;
@@ -17,7 +19,8 @@ std::shared_ptr<IParagraph> CDocument::InsertParagraph(const std::string& text, 
 
 std::shared_ptr<IImage> CDocument::InsertImage(const Path& path, int width, int height, optional<size_t> position)
 {
-	auto image = std::make_shared<CImage>(path, width, height, m_history);
+	auto historyAdapter = std::make_unique<CHistoryAdapter>(m_history);
+	auto image = std::make_shared<CImage>(path, width, height, std::move(historyAdapter));
 	auto docItem = std::make_shared<CDocumentItem>(image);
 	m_history.AddAndExecuteCommand(std::make_unique<CInsertItemCommand>(m_documentItems, docItem, position));
 	return image;

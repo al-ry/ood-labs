@@ -2,11 +2,12 @@
 #include "IImage.h"
 #include "IDocument.h"
 #include "History.h"
+#include "ICommandSink.h"
 
 class CImage: public IImage
 {
 public:
-	CImage(const Path& path, int width, int height, CHistory& history);
+	CImage(const Path& path, int width, int height, ICommandSinkPtr && command);
 	~CImage();
 	std::string GetPath() const;
 	int GetWidth() const;
@@ -15,7 +16,7 @@ public:
 
 private:
 	static bool IsCorrectImageSize(int height, int width);
-	CHistory& m_history;
+	ICommandSinkPtr m_commandSink;
 	int m_height;
 	int m_width;
 	std::string m_path;
