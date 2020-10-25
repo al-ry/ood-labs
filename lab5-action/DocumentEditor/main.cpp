@@ -60,7 +60,13 @@ private:
 		string text;
 		boost::optional<size_t> index;
 		index = ParsePosition(in);
-		std::getline(in, text);		
+		std::string head;
+		std::string tail;
+		if (in >> head)
+		{
+			std::getline(in, tail);	
+		}	
+		text = head + tail;
 		try
 		{
 			m_document->InsertParagraph(text, index);
