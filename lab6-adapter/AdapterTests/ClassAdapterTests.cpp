@@ -42,7 +42,7 @@ BOOST_FIXTURE_TEST_SUITE(ModernGraphicsRendererClassAdapter_tests, ModernGraphic
 		{
 			rendererClassAdapter.BeginDraw();
 			rendererClassAdapter.SetColor(0x00ff00);
-			rendererClassAdapter.SetCapacity(0.5);
+			rendererClassAdapter.SetOpacity(0.5);
 			rendererClassAdapter.MoveTo(5, 7);
 			rendererClassAdapter.LineTo(2, 3);
 
@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_SUITE(ModernGraphicsRendererClassAdapter_tests, ModernGraphic
 		BOOST_AUTO_TEST_CASE(should_change_capacity)
 		{
 			rendererClassAdapter.BeginDraw();
-			rendererClassAdapter.SetCapacity(0.5);
+			rendererClassAdapter.SetOpacity(0.5);
 			rendererClassAdapter.SetColor(0x00ff00);
 			rendererClassAdapter.MoveTo(5, 7);
 			rendererClassAdapter.LineTo(2, 3);
@@ -65,7 +65,7 @@ BOOST_FIXTURE_TEST_SUITE(ModernGraphicsRendererClassAdapter_tests, ModernGraphic
 	{
 		rendererClassAdapter.BeginDraw();
 		rendererClassAdapter.SetColor(0x00ff00);
-		rendererClassAdapter.SetCapacity(0.5);
+		rendererClassAdapter.SetOpacity(0.5);
 		rendererClassAdapter.MoveTo(5, 7);
 		rendererClassAdapter.LineTo(2, 3);
 		rendererClassAdapter.EndDraw();

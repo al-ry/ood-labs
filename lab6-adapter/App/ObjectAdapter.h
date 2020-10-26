@@ -11,7 +11,7 @@ public:
 	void MoveTo(int x, int y) override;
 	void LineTo(int x, int y) override;
 	void SetColor(uint32_t rgbColor) override;
-	void SetCapacity(float capacity);
+	void SetCapacity(float opacity);
 
 private:
 	modern_graphics_lib::CPoint m_fromPoint;

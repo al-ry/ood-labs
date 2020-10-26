@@ -27,7 +27,7 @@ void CModernGraphicsRendererObjectAdapter::SetColor(uint32_t rgbColor)
 	m_color = modern_graphics_lib::CRGBAColor(r, g, b, m_color.a);
 }
 
-void CModernGraphicsRendererObjectAdapter::SetCapacity(float capacity)
+void CModernGraphicsRendererObjectAdapter::SetCapacity(float opacity)
 {
-	m_color.a = capacity;
+	m_color.a = opacity;
 }

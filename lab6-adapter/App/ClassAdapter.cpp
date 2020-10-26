@@ -23,12 +23,12 @@ void ModernGraphicsRendererClassAdapter::SetColor(uint32_t rgbColor)
 {
 	float r = ((rgbColor >> 16) & 0xff) / 255.0f;
 	float g = ((rgbColor >> 8) & 0xff) / 255.0f;
-	float b = ((rgbColor)&0xff) / 255.0f;
+	float b = ((rgbColor) & 0xff) / 255.0f;
 
 	m_color = modern_graphics_lib::CRGBAColor(r, g, b, m_color.a);
 }
 
-void ModernGraphicsRendererClassAdapter::SetCapacity(float capacity)
+void ModernGraphicsRendererClassAdapter::SetOpacity(float opacity)
 {
-	m_color.a = capacity;
+	m_color.a = opacity;
 }
