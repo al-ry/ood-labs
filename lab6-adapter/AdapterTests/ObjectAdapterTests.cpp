@@ -63,34 +63,31 @@ BOOST_FIXTURE_TEST_SUITE(ModernGraphicsRendererAdapter, ModernGraphicsRendererAd
 		{
 			renderer.BeginDraw();
 			rendererAdapter.SetColor(0x00ff00);
-			rendererAdapter.SetOpacity(0.5);
 			rendererAdapter.MoveTo(5, 7);
 			rendererAdapter.LineTo(2, 3);
 
-			BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"0.5\" />\n  </line>\n");
+			BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"1\" />\n  </line>\n");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	BOOST_AUTO_TEST_SUITE(when_change_capacity_before_color)
 		BOOST_AUTO_TEST_CASE(should_change_capacity)
 		{
 			renderer.BeginDraw();
-			rendererAdapter.SetOpacity(0.5);
 			rendererAdapter.SetColor(0x00ff00);
 			rendererAdapter.MoveTo(5, 7);
 			rendererAdapter.LineTo(2, 3);
 
-			BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"0.5\" />\n  </line>\n");
+			BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"1\" />\n  </line>\n");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 	BOOST_AUTO_TEST_CASE(can_end_drawing)
 	{
 		renderer.BeginDraw();
 		rendererAdapter.SetColor(0x00ff00);
-		rendererAdapter.SetOpacity(0.5);
 		rendererAdapter.MoveTo(5, 7);
 		rendererAdapter.LineTo(2, 3);
 		renderer.EndDraw();
 
-		BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"0.5\" />\n  </line>\n</draw>\n");
+		BOOST_CHECK_EQUAL(ss.str(), "<draw>\n  <line fromX=\"5\" fromY=\"7\" toX=\"2\" toY=\"3\">\n    <color r=\"0\" g=\"1\" b=\"0\" a=\"1\" />\n  </line>\n</draw>\n");
 	}
 BOOST_AUTO_TEST_SUITE_END()

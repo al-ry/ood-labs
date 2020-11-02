@@ -42,7 +42,6 @@ void PaintPictureOnModernGraphicsRendererUsingClassAdapter()
 {
 	using namespace modern_graphics_lib;
 	ModernGraphicsRendererClassAdapter rendererClassAdapter(std::cout);
-	rendererClassAdapter.SetOpacity(0.5);
 	rendererClassAdapter.BeginDraw();
 	shape_drawing_lib::CCanvasPainter painter(rendererClassAdapter);
 	PaintPicture(painter);
